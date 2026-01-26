@@ -1,0 +1,61 @@
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+
+/* Tailwind 4 safelist for DB-driven classes */
+@source inline("col-span-4 sm:col-span-4 lg:col-span-3 col-span-4 sm:col-span-2 hidden lg:block col-span-4 sm:col-span-2 lg:col-span-1 hidden lg:block text-2xl !md:text-3xl md:!text-2xl !text-3xl text-3xl !md:text-3xl hidden !hidden !md:block md:w-1/2 bg-white dark:bg-black text-gray-900 dark:text-white text-shadow-lg text-shadow text-shadow-md text-shadow-xs text-shadow-xl text-xs text-sm text-base text-lg text-xl text-2xl text-3xl text-4xl text-5xl text-6xl text-7xl text-white text-black text-gray-500 text-red-500 text-blue-500 text-yellow-500 bg-white bg-black bg-gray-700 bg-red-600 bg-blue-600 bg-yellow-500 p-0 p-1 p-2 p-3 p-4 p-5 p-6 p-8 m-0 m-1 m-2 m-3 m-4 m-5 m-6 m-8 flex flex-row flex-col justify-start justify-center justify-end items-start items-center items-end grid grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 border border-2 border-4 border-white border-black border-gray-500 border-red-500 border-blue-500 rounded rounded-md rounded-lg rounded-xl block inline-block hidden xs:block xs:inline-block xs:hidden sm:block sm:inline-block sm:hidden md:block md:inline-block md:hidden lg:block lg:inline-block lg:hidden order-0 order-1 order-2 order-3 order-4 order-5 order-10 order-20 order-30 order-40 order-50 xs:order-0 xs:order-1 xs:order-2 xs:order-3 xs:order-4 xs:order-5 sm:order-0 sm:order-1 sm:order-2 sm:order-3 sm:order-4 sm:order-5 md:order-0 md:order-1 md:order-2 md:order-3 md:order-4 md:order-5 lg:order-0 lg:order-1 lg:order-2 lg:order-3 lg:order-4 lg:order-5");
+
+/*
+
+min-h-screen min-w-screen
+
+*/
+
+
+/*@source inline("*/
+/*  !* Textgrößen *!*/
+/*text-xs text-sm text-base text-lg text-xl text-2xl text-3xl text-4xl*/
+
+/*  !* Farben *!*/
+/*text-white text-black text-gray-500 text-red-500 text-blue-500 text-yellow-500*/
+/*bg-white bg-black bg-gray-700 bg-red-600 bg-blue-600 bg-yellow-500*/
+
+/*  !* Abstände *!*/
+/*p-0 p-1 p-2 p-3 p-4 p-5 p-6 p-8*/
+/*m-0 m-1 m-2 m-3 m-4 m-5 m-6 m-8*/
+
+/*  !* Layout *!*/
+/*flex flex-row flex-col*/
+/*justify-start justify-center justify-end*/
+/*items-start items-center items-end*/
+/*grid grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4*/
+
+/*  !* Border *!*/
+/*border border-2 border-4*/
+/*border-white border-black border-gray-500 border-red-500 border-blue-500*/
+
+/*  !* Border Radius *!*/
+/*rounded rounded-md rounded-lg rounded-xl*/
+
+/*  !* Display *!*/
+/*block inline-block hidden*/
+
+/*  !* Responsive Display inkl. XS *!*/
+/*xs:block xs:inline-block xs:hidden*/
+/*sm:block sm:inline-block sm:hidden*/
+/*md:block md:inline-block md:hidden*/
+/*lg:block lg:inline-block lg:hidden*/
+
+/*  !* Order (Sortierung) *!*/
+/*order-0 order-1 order-2 order-3 order-4 order-5 order-10 order-20 order-30 order-40 order-50*/
+
+/*  !* Responsive Order *!*/
+/*xs:order-0 xs:order-1 xs:order-2 xs:order-3 xs:order-4 xs:order-5*/
+/*sm:order-0 sm:order-1 sm:order-2 sm:order-3 sm:order-4 sm:order-5*/
+/*md:order-0 md:order-1 md:order-2 md:order-3 md:order-4 md:order-5*/
+/*lg:order-0 lg:order-1 lg:order-2 lg:order-3 lg:order-4 lg:order-5*/
+/*");*/
