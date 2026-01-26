@@ -1,0 +1,22 @@
+FROM php:8.2-fpm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libzip-dev libicu-dev zlib1g-dev nodejs npm zip wget unzip git \
+    && docker-php-ext-install pdo pdo_mysql zip intl
+
+# Composer installieren
+RUN wget https://getcomposer.org/installer -O - -q | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Xdebug + Panther
+RUN pecl install xdebug pcov \
+    && docker-php-ext-enable xdebug pcov \
+    && apt-get install -y libnss3 libgconf-2-4 chromium
+
+ENV PANTHER_NO_SANDBOX=1
+
+WORKDIR /var/www/html
+
+# 👉 Code ins Container-Image kopieren
+COPY ./web-app/ /var/www/html/
+
+EXPOSE 9000

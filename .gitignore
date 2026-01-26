@@ -1,5 +1,5 @@
-/docker/db/
+/docker/db_data/
 /docker/nginx/logs/
-/server-app/node_modules/
-/server-app/dist/
-!/web-app/assets/
+/web-app/node_modules/
+/web-app/public/builds/
+/web-app/public/bundles/

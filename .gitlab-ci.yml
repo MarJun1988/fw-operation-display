@@ -1,132 +1,76 @@
-# Definition der Pipeline
 stages:
-  - Building
-  - Code Quality
-  - Tests
-  - Cleanup
+  - build
+  - quality
+  - test
+  - cleanup
 
-# Weitere Konfigurationen
 variables:
-  DOCKER_DRIVER: overlay2
-  MYSQL_HOST: mysql
-  MYSQL_PORT: 3306
-  MYSQL_ROOT_PASSWORD: secret
-  MYSQL_DATABASE: fw-operation-display
-  DOCKER_PHP_FPM_IMAGE: "blackadler/php-8.1-fpm-composer:latest"
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: fw-operation-display_test
 
-image: php:8.1-fpm
-
-# Erstellen des Images
-BuildingImages:
-  stage: Building
-  image: docker:latest
+default:
+  image: registry.gitlab.com/marjun1988/fw-operation-display/php-ci:latest
   services:
-    - docker:dind
-  script:
-    - echo "Build the php-fpm Docker Image"
-    - cd docker
-    - cd php-fpm
-    - docker build -t $DOCKER_PHP_FPM_IMAGE .
-#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin
-    - docker push $DOCKER_PHP_FPM_IMAGE
-  only:
-    - main
+    - name: mysql:8.0
+      alias: db
 
-BuildingNpm:
-  stage: Building
+# ===================================
+# Build: Composer + NPM
+# ===================================
+build_app:
+  stage: build
   script:
-    - echo "Install the Packages"
-    - apt-get update && apt-get install nodejs npm libzip-dev libicu-dev zip unzip zlib1g-dev -y --no-install-recommends
-    - docker-php-ext-install -j$(nproc) pdo
-    - docker-php-ext-install -j$(nproc) pdo_mysql
-    - docker-php-ext-install zip
-    - docker-php-ext-configure intl
-    - docker-php-ext-install intl
-    - echo "Install the php Composer"
     - cd web-app
-    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php composer-setup.php
-    - php -r "unlink('composer-setup.php');"
-    - echo "Installing the php Dependencies"
-    - php composer.phar install
-    - echo "Build npm"
+    - composer install --no-interaction --prefer-dist --no-scripts
     - npm install
     - npm run build
-
-# Testen der Code Qualität vom php Code
-PHPStan:
-  stage: Code Quality
-  script:
-    - echo "Install the Packages"
-    - apt-get update && apt-get install libzip-dev libicu-dev zip unzip zlib1g-dev -y --no-install-recommends
-    - docker-php-ext-install -j$(nproc) pdo
-    - docker-php-ext-install -j$(nproc) pdo_mysql
-    - docker-php-ext-install zip
-    - docker-php-ext-configure intl
-    - docker-php-ext-install intl
-    - echo "Install the php Composer"
-    - cd web-app
-    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php composer-setup.php
-    - php -r "unlink('composer-setup.php');"
-    - echo "Installing the php Dependencies"
-    - php composer.phar install
-    - echo "Start the PHPStan Code Quality"
-    - php composer.phar phpstan
-  cache:
-    key: "${CI_JOB_NAME}-phpstan-build"
+  artifacts:
     paths:
       - web-app/vendor
-  allow_failure: true   # Erlauben Sie das Versagen des Schrittes
+      - web-app/node_modules
+      - web-app/public/build
+    expire_in: 1h
 
-# Tests
-PHPUnit:
-  stage: Tests
-  services:
-    - mysql:8.0-oracle
+# ===================================
+# Code Quality
+# ===================================
+phpstan:
+  stage: quality
   script:
-    - export PANTHER_NO_SANDBOX=1
-    - echo "Install the Packages"
-    - apt-get update && apt-get install libnss3 libgconf-2-4 chromium nodejs npm wget libzip-dev libicu-dev zip unzip zlib1g-dev -y --no-install-recommends
-    - docker-php-ext-install -j$(nproc) pdo
-    - docker-php-ext-install -j$(nproc) pdo_mysql
-    - docker-php-ext-install zip
-    - docker-php-ext-configure intl
-    - docker-php-ext-install intl
-    - pecl install pcov
-    - docker-php-ext-enable pcov
-    - echo "Install the php Composer"
     - cd web-app
-    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php composer-setup.php
-    - php -r "unlink('composer-setup.php');"
-    - echo "Installing the php Dependencies"
-    - php composer.phar install
-    - echo "Build npm"
-    - npm install
-    - npm run build
-    - chmod +x ./drivers/chromedriver
-    - echo "Start the PHPUnit Tests"
-    - php ./bin/console doctrine:database:create --env=test
-    - php ./bin/console doctrine:schema:create --env=test
-    - ./vendor/bin/phpunit --log-junit build/report.xml
+    - composer phpstan
+  allow_failure: true
+
+# ===================================
+# Tests inkl. Fixtures
+# ===================================
+phpunit:
+  stage: test
+  services:
+    - name: mysql:8.0
+      alias: db
+  variables:
+    DATABASE_URL: "mysql://root:root@db:3306/fw-operation-display"
+    APP_ENV: test
+  before_script:
+    - cd web-app
+    - cp .env.test .env
+    # Warten bis MySQL verfügbar
+#    - until nc -z db 3306; do echo "Warte auf MySQL..."; sleep 2; done
+  script:
+    - composer test
   artifacts:
     reports:
       junit: web-app/build/report.xml
-    expire_in: 30 min
-  cache:
-    key: "${CI_JOB_NAME}-phpunit-build"
-    paths:
-      - web-app/vendor
-  allow_failure: true   # Erlauben Sie das Versagen des Schrittes
+    expire_in: 1h
+  allow_failure: true
 
-# Um alle Container und Images aufzuräumen
-Cleanup:
-  stage: Cleanup
-  image: docker:latest
-  services:
-    - docker:dind
+# ===================================
+# Cleanup
+# ===================================
+cleanup:
+  stage: cleanup
   script:
-    - docker system prune -f
+    #- docker system prune -f
+    - echo "Clean-Up"
   when: always

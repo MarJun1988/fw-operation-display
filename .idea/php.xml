@@ -170,6 +170,8 @@
       <path value="$PROJECT_DIR$/web-app/vendor/willdurand/negotiation" />
       <path value="$PROJECT_DIR$/web-app/vendor/nelmio/cors-bundle" />
       <path value="$PROJECT_DIR$/web-app/vendor/api-platform/core" />
+      <path value="$PROJECT_DIR$/web-app/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/web-app/vendor/doctrine/doctrine-fixtures-bundle" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">

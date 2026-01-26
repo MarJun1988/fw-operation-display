@@ -26,13 +26,13 @@ class BasicController extends AbstractController
      * @throws Exception
      */
     #[Route('/basic', name: 'app_basic')]
-    public function index(EntityManagerInterface  $entityManager,
-                          ValidatorInterface      $validator,
-                          GeneralRepository       $generalRepository,
-                          SiteStyleRepository     $siteStyleRepository,
-                          IncomingAlertRepository $incomingAlertRepository
-    ): Response
-    {
+    public function index(
+        EntityManagerInterface  $entityManager,
+        ValidatorInterface      $validator,
+        GeneralRepository       $generalRepository,
+        SiteStyleRepository     $siteStyleRepository,
+        IncomingAlertRepository $incomingAlertRepository
+    ): Response {
         $fileSystem = new Filesystem();
         $fileGeneral = "../assets/database-basic-data/general.json";
         $fileSiteStyle = "../assets/database-basic-data/site-style.json";
@@ -45,7 +45,6 @@ class BasicController extends AbstractController
 
             if (count($jsonGeneral) > 0) {
                 foreach ($jsonGeneral as $general) {
-
                     if (array_keys($general)[0] !== "_comment") {
                         $newGeneral = new General();
                         $newGeneral
@@ -62,7 +61,7 @@ class BasicController extends AbstractController
                         if (($result = $validator->validate($newGeneral))->count() === 0) {
                             $entityManager->flush();
                         } else {
-                            echo $result;
+                            echo $result->count();
                         }
                     }
                 }
@@ -75,7 +74,6 @@ class BasicController extends AbstractController
 
             if (count($jsonSiteStyle) > 0) {
                 foreach ($jsonSiteStyle as $siteStyle) {
-
                     if (array_keys($siteStyle)[0] !== "_comment") {
                         $newSiteStyle = new SiteStyle();
                         $newSiteStyle
@@ -91,7 +89,7 @@ class BasicController extends AbstractController
                         if (($result = $validator->validate($newSiteStyle))->count() === 0) {
                             $entityManager->flush();
                         } else {
-                            echo $result;
+                            echo $result->count();
                         }
                     }
                 }
@@ -104,7 +102,6 @@ class BasicController extends AbstractController
 
             if (count($jsonIncomingAlert) > 0) {
                 foreach ($jsonIncomingAlert as $incomingAlert) {
-
                     if (array_keys($incomingAlert)[0] !== "_comment") {
                         $newIncomingAlert = new IncomingAlert();
                         $newIncomingAlert
@@ -117,7 +114,7 @@ class BasicController extends AbstractController
                         if (($result = $validator->validate($newIncomingAlert))->count() === 0) {
                             $entityManager->flush();
                         } else {
-                            echo $result;
+                            echo $result->count();
                         }
                     }
                 }

@@ -16,9 +16,9 @@ class SiteDisplayRaspberryPiTest extends PantherTestCase
 
 
     /**
-     * @param array $options see {@see $defaultOptions}
-     * @param array $kernelOptions
-     * @param array $managerOptions
+     * @param array<string,mixed> $options Options for Panther client
+     * @param array<string,mixed> $kernelOptions Kernel options
+     * @param array<string,mixed> $managerOptions Manager options
      * @return Client
      */
     protected static function createPantherClient(array $options = [], array $kernelOptions = [], array $managerOptions = []): Client
