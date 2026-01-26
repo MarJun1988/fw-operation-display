@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { computed, nextTick, type Ref, ref, watch } from 'vue'
+import {defineStore} from 'pinia'
+import {computed, type ComputedRef, nextTick, type Ref, ref, watch} from 'vue'
 import type {
   AnySubscriptionGeneral,
   CustomColumnProps,
@@ -7,8 +7,8 @@ import type {
   SubscriptionDeleteGeneral,
 } from '@/utils/interfaces.ts'
 import gql from 'graphql-tag'
-import { useMutation, useSubscription } from '@vue/apollo-composable'
-import { useCommonStore } from '@/stores/common.ts'
+import {useMutation, useSubscription} from '@vue/apollo-composable'
+import {useCommonStore} from '@/stores/common.ts'
 import {
   MUTATIONEN_CREATE_GENERAL,
   MUTATIONEN_DELETE_GENERAL,
@@ -20,12 +20,12 @@ import {
   SUBSCRIPTION_GENERAL_DELETED,
   SUBSCRIPTION_GENERAL_UPDATED,
 } from '@/utils/graphql.ts'
-import { apolloClient } from '@/apollo.ts'
-import type { DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent } from 'primevue'
-import type { RouteParamValue } from 'vue-router'
-import type { DataTableFilterMeta, DataTableSortMeta } from 'primevue/datatable'
-import { FilterMatchMode } from '@primevue/core/api'
-import { devLog } from '@/utils/utils.ts'
+import {apolloClient} from '@/apollo.ts'
+import type {DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent} from 'primevue'
+import type {RouteParamValue} from 'vue-router'
+import type {DataTableFilterMeta, DataTableSortMeta} from 'primevue/datatable'
+import {FilterMatchMode} from '@primevue/core/api'
+import {devLog} from '@/utils/utils.ts'
 
 export const useGeneralStore = defineStore('generalStore', () => {
   const item: Ref<General> = ref<General>({
@@ -41,28 +41,28 @@ export const useGeneralStore = defineStore('generalStore', () => {
   const allItems: Ref<General[]> = ref<General[]>([])
   const totalCount: Ref<number> = ref(0)
   // Spalten für die Sortierung
-  const multiSortMeta: DataTableSortMeta[] = [{ field: 'sorting', order: 1 }]
+  const multiSortMeta: DataTableSortMeta[] = [{field: 'sorting', order: 1}]
 
   const filters: Ref<DataTableFilterMeta> = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    value: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    sorting: { value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    name: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    value: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    sorting: {value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   })
 
   /**
    * Spalten für die Tabelle
    */
   const columns: Ref<CustomColumnProps[]> = ref([
-    { field: 'id', header: '#', defaultShowing: false, dataType: 'text' },
-    { field: 'name', header: 'Name', defaultShowing: true, dataType: 'text' },
-    { field: 'value', header: 'Wert', defaultShowing: true, dataType: 'text' },
-    { field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text' },
-    { field: 'sorting', header: 'Sortierung', defaultShowing: true, dataType: 'numeric' },
+    {field: 'id', header: '#', defaultShowing: false, dataType: 'text'},
+    {field: 'name', header: 'Name', defaultShowing: true, dataType: 'text'},
+    {field: 'value', header: 'Wert', defaultShowing: true, dataType: 'text'},
+    {field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text'},
+    {field: 'sorting', header: 'Sortierung', defaultShowing: true, dataType: 'numeric'},
     {
       field: 'createdAt',
       header: 'erstellt am',
@@ -79,14 +79,14 @@ export const useGeneralStore = defineStore('generalStore', () => {
 
   // Definierung der Filter
   const defaultFilters = {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    value: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    sorting: { value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    name: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    value: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    sorting: {value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   }
 
   // Pagination-Zustand
@@ -101,21 +101,21 @@ export const useGeneralStore = defineStore('generalStore', () => {
       ...item,
       createdAt: item.createdAt
         ? new Date(item.createdAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
       updatedAt: item.updatedAt
         ? new Date(item.updatedAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
     }
   }
@@ -133,9 +133,9 @@ export const useGeneralStore = defineStore('generalStore', () => {
     await new Promise((resolve) => setTimeout(resolve)) // micro delay (1 frame)
 
     try {
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: QUERY_GENERALS_PAGED,
-        variables: { page: event },
+        variables: {page: event},
         fetchPolicy: 'no-cache',
       })
 
@@ -152,10 +152,10 @@ export const useGeneralStore = defineStore('generalStore', () => {
   const fetchOnlyItem = async (id: string | RouteParamValue[]) => {
     try {
       common.isLoading = true
-      const { data } = await apolloClient
+      const {data} = await apolloClient
         .query({
           query: QUERY_GENERAL,
-          variables: { generalId: id },
+          variables: {generalId: id},
         })
         .finally(() => (common.isLoading = false))
       item.value.id = data.general.id
@@ -177,7 +177,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
   const fetchAllItems = async () => {
     try {
       common.isLoading = true
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: QUERY_GENERALS,
       })
       allItems.value = data.generals.map(mapGeneralDates)
@@ -223,16 +223,16 @@ export const useGeneralStore = defineStore('generalStore', () => {
         totalCount.value = msg.totalCount ?? pagedItems.value.length
 
         if (pagedItems.value.length !== totalCount.value) {
-          await onLazyLoad({ first: pageSize.value * page.value, rows: pageSize.value })
+          await onLazyLoad({first: pageSize.value * page.value, rows: pageSize.value})
         }
       },
     },
   ]
 
-  subscriptions.forEach(({ query, handler }) => {
-    const { onResult } = useSubscription(query)
+  subscriptions.forEach(({query, handler}) => {
+    const {onResult} = useSubscription(query)
 
-    onResult(({ data }) => {
+    onResult(({data}) => {
       if (!data) return
 
       // Name des Subscription-Felds herausfinden
@@ -246,10 +246,10 @@ export const useGeneralStore = defineStore('generalStore', () => {
   })
 
   // ✅ CREATE
-  const { mutate: createMutateGeneral, loading: creatingLoading } = useMutation(
+  const {mutate: createMutateGeneral, loading: creatingLoading} = useMutation(
     MUTATIONEN_CREATE_GENERAL,
     {
-      update(cache, { data }) {
+      update(cache, {data}) {
         if (!data?.createGeneral) return
         cache.modify({
           fields: {
@@ -287,7 +287,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
   }
 
   // ✅ UPDATE
-  const { mutate: updateMutateGeneral, loading: updatingLoading } =
+  const {mutate: updateMutateGeneral, loading: updatingLoading} =
     useMutation(MUTATIONEN_UPDATE_GENERAL)
 
   const updateItem = async (input?: Partial<General>) => {
@@ -308,11 +308,11 @@ export const useGeneralStore = defineStore('generalStore', () => {
   }
 
   // ✅ DELETE
-  const { mutate: deleteMutateGeneral, loading: deletingLoading } =
+  const {mutate: deleteMutateGeneral, loading: deletingLoading} =
     useMutation(MUTATIONEN_DELETE_GENERAL)
 
   const deleteItem = async (ids: (string | undefined)[]) => {
-    const result = await deleteMutateGeneral({ ids })
+    const result = await deleteMutateGeneral({ids})
 
     if (result?.data?.deleteGeneral?.deleted) {
       const resultItems: General[] = result?.data?.deleteGeneral.deleted
@@ -330,7 +330,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
   }
 
   // 📡 Bindung: loading/error direkt verknüpfen (reaktiv!)
-  const isBusy = computed(
+  const isBusy: ComputedRef<boolean> = computed(
     () => creatingLoading.value || updatingLoading.value || deletingLoading.value,
   )
 
@@ -348,7 +348,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
    * Route zum neuen Eintrag
    */
   const routeToNewItem = () => {
-    return { name: 'ground-setting-new' }
+    return {name: 'ground-setting-new'}
   }
 
   /**
@@ -356,7 +356,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
    * @param item
    */
   const routeToEditItem = (item: General) => {
-    return { name: 'ground-setting-edit', params: { id: item.id } }
+    return {name: 'ground-setting-edit', params: {id: item.id}}
   }
 
   /**
@@ -364,7 +364,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
    * @param item
    */
   const routeToDeleteItem = (item: General) => {
-    return { name: 'ground-setting-delete', params: { id: item.id } }
+    return {name: 'ground-setting-delete', params: {id: item.id}}
   }
 
   // ------------------------------------------------------
@@ -380,8 +380,19 @@ export const useGeneralStore = defineStore('generalStore', () => {
   })
 
   const get = (name: string) => {
+    // devLog('get Generals: ', name)
     return generalsMap.value[name] || null
   }
+
+  const getSiteTitle: ComputedRef<string> = computed(() => {
+    if (allItems.value && allItems.value.length > 0) {
+      const res = allItems.value.filter(item => item.name === 'site_title')
+      if (res && res.length > 0 && res[0]) {
+        return res[0].value
+      }
+    }
+    return ''
+  })
 
   return {
     filters,
@@ -408,5 +419,7 @@ export const useGeneralStore = defineStore('generalStore', () => {
     routeToDeleteItem,
     generalsMap,
     get,
+    getSiteTitle,
+    isBusy
   }
 })

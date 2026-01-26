@@ -21,8 +21,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
+    env_file:
+      - .env.production
     volumes:
       - ./pg_backups:/backups
     restart: always

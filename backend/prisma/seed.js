@@ -498,6 +498,11 @@ const DEFAULT_SITE_STYLES = [
 
 const DEFAULT_VERSIONS = [
     {
+        versionNumber: 'v.2.0.3',
+        description: 'Ein kleiner Bug wurde behoben: Der Seitentitel wird jetzt korrekt aus der Datenbank ausgelesen und angezeigt.',
+        createdAt: '2025-12-16T15:00:00Z',
+    },
+    {
         versionNumber: 'v.2.0.2',
         description: 'Eine saubere Versionierung wurde eingeführt. Ansonsten sollte alles stabil über die CI/CD-Pipelines weiterlaufen.',
         createdAt: '2025-12-15T21:00:00Z',

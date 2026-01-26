@@ -47,7 +47,7 @@ export const useVersionStore = defineStore('versionStore', () => {
     }
     return {
       id: '',
-      versionNumber: 'v.2.0.2',
+      versionNumber: 'v.2.0.3',
       description: '',
       createdAt: new Date(),
       updatedAt: null,

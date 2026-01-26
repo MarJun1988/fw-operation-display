@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
+import {useGeneralStore} from "@/stores/general.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -374,6 +375,25 @@ const router = createRouter({
       component: () => import('@/views/NotFound.vue'),
     },
   ],
+})
+
+router.beforeEach(async (to) => {
+  const storeGeneral = useGeneralStore()
+
+  // DB-Werte einmal laden
+  if (!storeGeneral.isBusy) {
+    await storeGeneral.fetchAllItems()
+  }
+
+  const baseTitle = storeGeneral.getSiteTitle
+
+  // optional: Route-spezifisch
+  const routeTitle =
+    typeof to.meta.label === 'string'
+      ? ` – ${to.meta.label}`
+      : ''
+
+  document.title = `${baseTitle}${routeTitle}`
 })
 
 export default router
