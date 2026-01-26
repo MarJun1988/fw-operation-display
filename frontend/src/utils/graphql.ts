@@ -238,6 +238,47 @@ export const QUERY_SITE_STYLE_PAGED = gql`
   }
 `
 
+// Version
+export const QUERY_VERSION = gql`
+  query Version($versionId: ID!) {
+    version(id: $versionId) {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const QUERY_VERSIONS = gql`
+  query Versions {
+    versions {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const QUERY_VERSIONS_PAGED = gql`
+  query VersionsPaged($page: DataTablePageInput) {
+    versionsPaged(page: $page) {
+      totalRecords
+      items {
+        id
+        versionNumber
+        description
+        createdAt
+        updatedAt
+        comment
+      }
+    }
+  }
+`
+
 // #### Mutationen
 
 // General
@@ -506,6 +547,47 @@ export const MUTATIONEN_DELETE_SITE_STYLE = gql`
   }
 `
 
+// Version
+export const MUTATIONEN_CREATE_VERSION = gql`
+  mutation CreateVersion($versionNumber: String!, $description: String!, $comment: String) {
+    createVersion(versionNumber: $versionNumber, description: $description, comment: $comment) {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const MUTATIONEN_UPDATE_VERSION = gql`
+  mutation UpdateVersion($id: ID!, $versionNumber: String!, $description: String!, $comment: String) {
+    updateVersion(id: $id, versionNumber: $versionNumber, description: $description, comment: $comment) {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const MUTATIONEN_DELETE_VERSION = gql`
+  mutation DeleteVersion($ids: [ID!]!) {
+    deleteVersion(ids: $ids) {
+      deleted {
+        id
+        versionNumber
+        description
+        createdAt
+        updatedAt
+        comment
+      }
+      totalCount
+    }
+  }
+`
+
 // #### Subscription
 
 // General
@@ -737,6 +819,47 @@ export const SUBSCRIPTION_SITE_STYLE_DELETED = gql`
         htmlStyle
         htmlClass
         sorting
+        createdAt
+        updatedAt
+        comment
+      }
+      totalCount
+    }
+  }
+`
+
+// Version
+export const SUBSCRIPTION_VERSION_CREATED = gql`
+  subscription VersionCreated {
+    versionCreated {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const SUBSCRIPTION_VERSION_UPDATED = gql`
+  subscription VersionUpdated {
+    versionUpdated {
+      id
+      versionNumber
+      description
+      createdAt
+      updatedAt
+      comment
+    }
+  }
+`
+export const SUBSCRIPTION_VERSION_DELETED = gql`
+  subscription VersionDeleted {
+    versionDeleted {
+      deleted {
+        id
+        versionNumber
+        description
         createdAt
         updatedAt
         comment

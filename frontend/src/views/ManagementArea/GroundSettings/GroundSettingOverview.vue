@@ -9,6 +9,7 @@ const store = useGeneralStore()
 <template>
   <!--  Tabelle -->
   <DefaultTable
+    state-key="dataTable-ground-settings"
     :store="store"
     :delete-disabled="true"
   />

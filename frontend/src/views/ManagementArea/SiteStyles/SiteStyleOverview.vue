@@ -9,6 +9,7 @@ const store = useSiteStyleStore()
 <template>
   <!--  Tabelle -->
   <DefaultTable
+    state-key="dataTable-site-styles"
     :store="store"
     :delete-disabled="true"
   />

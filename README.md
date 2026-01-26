@@ -83,6 +83,7 @@ Es gibt drei docker-compose Dateien:
 ├─ backup/
 │   ├─ backup.sh
 │   └─ Dockerfile
+├─ vitepress/
 ├─ docker-compose.yml
 ├─ docker-compose.dev.yml
 ├─ docker-compose.prod.yml

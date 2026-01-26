@@ -8,6 +8,85 @@ und folgt **Semantic Versioning** (`MAJOR.MINOR.PATCH`).
 
 ---
 
+## [2.1.0] – 2025-12-22
+
+### 🚀 Stabilisierung, Dokumentation & UI-Optimierungen
+
+#### 🔥 Added
+
+- Vollständig integrierte und ausgebaute **Online-Hilfe**
+- Persistente **Tabelleneinstellungen im Browser (LocalStorage)**
+- Zusätzliche Fehler- und Statusseiten (403 / 404 / 500 / 50x)
+- Erweiterte Dokumentation (VitePress) inkl. Dashboard- und Management-Bereiche
+
+#### 🔧 Changed
+
+- Dashboard-Layout optimiert:
+    - Karte prominenter platziert
+    - Bessere visuelle Gewichtung zentraler Inhalte
+- Verbesserte Versionierungs- und Release-Struktur
+- CI/CD-Pipelines weiter stabilisiert
+- Kleinere Layout- und UI-Optimierungen in mehreren Bereichen
+
+#### 🐞 Fixed
+
+- Fehler im automatischen **Datenbank-Backup** behoben
+- Korrekte Extraktion und Anzeige von **Adressen aus Alarmdaten**
+- Seitentitel wird zuverlässig aus der Datenbank geladen
+- Diverse kleinere Bugfixes im Frontend und Backend
+
+---
+
+## [2.0.8] – 2025-12-22
+
+#### 🔧 Changed
+
+- Hilfe vollständig im neuen Design verfügbar
+
+## [2.0.7] – 2025-12-21
+
+#### 🔥 Added
+
+- Einführung der Hilfe (schrittweiser Ausbau)
+
+## [2.0.6] – 2025-12-19
+
+#### 🔥 Added
+
+- Speicherung von Tabelleneinstellungen im Browser
+
+## [2.0.5] – 2025-12-19
+
+#### 🐞 Fixed
+
+- Automatisches Datenbank-Backup funktionierte nicht korrekt
+
+## [2.0.4] – 2025-12-19
+
+#### 🔧 Changed
+
+- Dashboard-Layout angepasst
+- Karte prominenter platziert
+
+## [2.0.3] – 2025-12-16
+
+#### 🐞 Fixed
+
+- Seitentitel wird korrekt aus der Datenbank geladen
+
+## [2.0.2] – 2025-12-15
+
+#### 🔧 Changed
+
+- Saubere Versionierung eingeführt
+- CI/CD-Pipelines stabilisiert
+
+## [2.0.1] – 2025-12-15
+
+#### 🐞 Fixed
+
+- Adresse wurde nicht immer korrekt aus Alarmdaten extrahiert
+
 ## [2.0.0] – 2025-12-12
 ### 🚀 Major Release – Infrastruktur & CI/CD
 

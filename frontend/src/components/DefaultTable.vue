@@ -1,16 +1,21 @@
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
-import { computed, type ComputedRef, onMounted, ref, type Ref } from 'vue'
-import { useCommonStore } from '@/stores/common.ts'
-import type { CustomColumnProps, General, IncomingAlert } from '@/utils/interfaces.ts'
-import type { useIncomingAlertStore } from '@/stores/incomingAlert.ts'
-import type { useGeneralStore } from '@/stores/general.ts'
-import type { DataTableFilterMeta } from 'primevue/datatable'
-import type { DataTableFilterEvent, DataTableFilterMetaData } from 'primevue'
-import { type Router, useRouter } from 'vue-router'
-import { useMessageStore } from '@/stores/message.ts'
-import type { useMessageIconStore } from '@/stores/messageIcon.ts'
-import { useSiteStyleStore } from '@/stores/siteStyle.ts'
+import {storeToRefs} from 'pinia'
+import {computed, type ComputedRef, onMounted, ref, type Ref, watch} from 'vue'
+import {useCommonStore} from '@/stores/common.ts'
+import type {
+  CustomColumnProps,
+  General,
+  IncomingAlert
+} from '@/utils/interfaces.ts'
+import type {useIncomingAlertStore} from '@/stores/incomingAlert.ts'
+import type {useGeneralStore} from '@/stores/general.ts'
+import type {DataTableFilterMeta} from 'primevue/datatable'
+import type {DataTableFilterEvent, DataTableFilterMetaData} from 'primevue'
+import {type Router, useRouter} from 'vue-router'
+import {useMessageStore} from '@/stores/message.ts'
+import type {useMessageIconStore} from '@/stores/messageIcon.ts'
+import {useSiteStyleStore} from '@/stores/siteStyle.ts'
+import type {useVersionStore} from "@/stores/version.ts";
 
 // type GeneralStore = ReturnType<typeof useGeneralStore>
 type IncomingAlertStore = ReturnType<typeof useIncomingAlertStore>
@@ -18,17 +23,19 @@ type GeneralStore = ReturnType<typeof useGeneralStore>
 type MessageStore = ReturnType<typeof useMessageStore>
 type MessageIconStore = ReturnType<typeof useMessageIconStore>
 type SiteStyleStore = ReturnType<typeof useSiteStyleStore>
+type VersionStore = ReturnType<typeof useVersionStore>
 
 const props = defineProps<{
-  store: IncomingAlertStore | GeneralStore | MessageStore | MessageIconStore | SiteStyleStore
-  deleteDisabled: Boolean
+  store: IncomingAlertStore | GeneralStore | MessageStore | MessageIconStore | SiteStyleStore | VersionStore
+  deleteDisabled: Boolean,
+  stateKey: string
 }>()
 
 // Pinia Stores
 const storeCommon = useCommonStore()
 
-const { isLoading } = storeToRefs(storeCommon)
-const { pagedItems, totalCount, pageSize, columns } = storeToRefs(props.store)
+const {isLoading} = storeToRefs(storeCommon)
+const {pagedItems, totalCount, pageSize, columns, multiSortMeta} = storeToRefs(props.store)
 
 // Template Text für die Paginator (unter der Tabelle)
 const currentPageReportTemplate = `{first} bis {last} von {totalRecords} Einträgen`
@@ -51,10 +58,10 @@ const onToggle = (val: CustomColumnProps[]) => {
 }
 
 // Filter für die Tabelle
-const filters: Ref<DataTableFilterMeta> = ref({ ...props.store.defaultFilters })
+const filters: Ref<DataTableFilterMeta> = ref({...props.store.defaultFilters})
 
 // Erst Initialisierung des Filters
-const initFilters = () => (filters.value = { ...props.store.defaultFilters })
+const initFilters = () => (filters.value = {...props.store.defaultFilters})
 
 // Löschen der gesamten Werte
 const clearFilter = () => {
@@ -75,6 +82,8 @@ const onGlobalSearch = async () => {
   })
 }
 
+// const defaultMultiSortMeta: Ref<DataTableSortMeta[]> = ref([...multiSortMeta.value])
+
 // Event beim Filter auswahl
 const onFilter = async (event: DataTableFilterEvent) => {
   filters.value = event.filters // aktualisieren (damit matchModes erhalten bleiben)
@@ -83,7 +92,7 @@ const onFilter = async (event: DataTableFilterEvent) => {
     rows: pageSize.value,
     sortField: undefined,
     sortOrder: null,
-    multiSortMeta: [],
+    multiSortMeta: multiSortMeta.value,
     filters: event.filters,
   })
 }
@@ -134,9 +143,10 @@ const tooltipButtonDeleteSelected: ComputedRef<string> = computed(() => {
 })
 
 // Registers a callback to be called after the component has been mounted.
-onMounted(() => {
+onMounted(async () => {
   storeCommon.isLoading = false
-  props.store.onLazyLoad({ first: 0, rows: pageSize.value })
+  props.store.onLazyLoad({first: 0, rows: pageSize.value, multiSortMeta: multiSortMeta.value})
+  restoreSelectedColumns();
 })
 
 const isDev: Ref<boolean> = ref(false)
@@ -147,6 +157,29 @@ const isDisabled: ComputedRef<boolean> = computed(() => {
 if (import.meta.env.DEV) {
   isDev.value = true
 }
+
+watch(
+  selectedColumns,
+  (cols) => {
+    localStorage.setItem(
+      `${props.stateKey}-selected-columns`,
+      JSON.stringify(cols.map((c) => c.columnKey)),
+    );
+  },
+  {deep: true},
+);
+
+const restoreSelectedColumns = () => {
+  const stored = localStorage.getItem(`${props.stateKey}-selected-columns`,);
+
+  if (!stored) return;
+
+  const ids: string[] = JSON.parse(stored);
+
+  selectedColumns.value = columns.value.filter((col) => col.columnKey &&
+    ids.includes(col.columnKey),
+  );
+};
 </script>
 
 <template>
@@ -195,6 +228,7 @@ if (import.meta.env.DEV) {
     :loading="isLoading"
     :multi-sort-meta="store.multiSortMeta"
     :rows-per-page-options="rowsPerPageOptions"
+    :stateKey="props.stateKey"
     :total-records="totalCount"
     :value="pagedItems"
     data-key="id"
@@ -205,6 +239,7 @@ if (import.meta.env.DEV) {
     paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink  RowsPerPageDropdown"
     size="small"
     sort-mode="multiple"
+    stateStorage="local"
     striped-rows
     @filter="onFilter($event)"
     @page="store.onLazyLoad($event)"
@@ -476,7 +511,7 @@ if (import.meta.env.DEV) {
           class: 'justify-center',
         },
       }"
-      class="w-24"
+      class="min-w-25 w-25 max-w-25"
       exclude-global-filter
       header="Aktionen"
     >

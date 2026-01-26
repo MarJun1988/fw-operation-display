@@ -66,7 +66,10 @@ const activeTab = computed(() => {
             class="flex flex-wrap items-center text-inherit"
             @click="navigate"
           >
-            <i :class="managementAreaRoute?.meta?.icon" class="w-full" />
+            <i
+              :class="managementAreaRoute?.meta?.icon"
+              class="w-full"
+            />
             <span class="w-full hidden md:block md:text-xs lg:text-base">{{
               managementAreaRoute?.meta?.label
             }}</span>

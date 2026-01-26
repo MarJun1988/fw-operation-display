@@ -4,12 +4,12 @@ import type {
   IncomingAlert,
   SubscriptionDeleteIncomingAlert,
 } from '@/utils/interfaces.ts'
-import { useCommonStore } from '@/stores/common.ts'
-import { computed, type ComputedRef, nextTick, ref, type Ref, watch } from 'vue'
-import type { DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent } from 'primevue'
-import { type RouteParamValue } from 'vue-router'
-import { apolloClient } from '@/apollo.ts'
-import { defineStore } from 'pinia'
+import {useCommonStore} from '@/stores/common.ts'
+import {computed, type ComputedRef, nextTick, ref, type Ref, watch} from 'vue'
+import type {DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent} from 'primevue'
+import {type RouteParamValue} from 'vue-router'
+import {apolloClient} from '@/apollo.ts'
+import {defineStore} from 'pinia'
 import {
   MUTATIONEN_CREATE_INCOMING_ALERT,
   MUTATIONEN_DELETE_INCOMING_ALERT,
@@ -20,11 +20,11 @@ import {
   SUBSCRIPTION_INCOMING_ALERT_DELETED,
   SUBSCRIPTION_INCOMING_ALERT_UPDATED,
 } from '@/utils/graphql.ts'
-import { useMutation, useSubscription } from '@vue/apollo-composable'
+import {useMutation, useSubscription} from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-import type { DataTableFilterMeta, DataTableSortMeta } from 'primevue/datatable'
-import { FilterMatchMode } from '@primevue/core/api'
-import { devLog } from '@/utils/utils.ts'
+import type {DataTableFilterMeta, DataTableSortMeta} from 'primevue/datatable'
+import {FilterMatchMode} from '@primevue/core/api'
+import {devLog} from '@/utils/utils.ts'
 
 export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   const item: Ref<IncomingAlert> = ref<IncomingAlert>({
@@ -39,33 +39,60 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   const allItems: Ref<IncomingAlert[]> = ref<IncomingAlert[]>([])
   const totalCount: Ref<number> = ref(0)
   // Spalten für die Sortierung
-  const multiSortMeta: DataTableSortMeta[] = [{ field: 'createdAt', order: -1 }]
+  const multiSortMeta: Ref<DataTableSortMeta[]> = ref([{field: 'createdAt', order: -1}])
 
   const filters: Ref<DataTableFilterMeta> = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    text: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    address: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    text: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    address: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   })
 
   /**
    * Spalten für die Tabelle
    */
   const columns: Ref<CustomColumnProps[]> = ref([
-    { field: 'id', header: '#', defaultShowing: false, dataType: 'text' },
-    { field: 'address', header: 'Adresse', defaultShowing: true, dataType: 'text' },
-    { field: 'text', header: 'Text', defaultShowing: true, dataType: 'text' },
-    { field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text' },
     {
+      columnKey: 'incoming-alert-id',
+      field: 'id',
+      header: '#',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'incoming-alert-address',
+      field: 'address',
+      header: 'Adresse',
+      defaultShowing: true,
+      dataType: 'text',
+      class: 'w-40'
+    },
+    {
+      columnKey: 'incoming-alert-text',
+      field: 'text',
+      header: 'Text',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'incoming-alert-comment',
+      field: 'comment',
+      header: 'Kommentar',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'incoming-alert-createdAt',
       field: 'createdAt',
       header: 'erstellt am',
       dataType: 'date',
       defaultShowing: false,
     },
     {
+      columnKey: 'incoming-alert-updatedAt',
       field: 'updatedAt',
       header: 'letzte bearbeitung',
       dataType: 'date',
@@ -75,13 +102,13 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
 
   // Definierung der Filter
   const defaultFilters = {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    text: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    address: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    text: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    address: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   }
 
   // Pagination-Zustand
@@ -96,21 +123,21 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
       ...item,
       createdAt: item.createdAt
         ? new Date(item.createdAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
       updatedAt: item.updatedAt
         ? new Date(item.updatedAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
     }
   }
@@ -120,7 +147,8 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
       | DataTablePageEvent
       | DataTableSortEvent
       | DataTableFilterEvent
-      | { first: number; rows: number },
+      | { first: number; rows: number }
+      | { first: number; rows: number, multiSortMeta: DataTableSortMeta }
   ): Promise<void> => {
     common.isLoading = true
 
@@ -129,9 +157,9 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
     await new Promise((resolve) => setTimeout(resolve)) // micro delay (1 frame)
 
     try {
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: QUERY_INCOMING_ALERTS_PAGED,
-        variables: { page: event },
+        variables: {page: event},
         fetchPolicy: 'no-cache',
       })
 
@@ -148,10 +176,10 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   const fetchOnlyItem = async (id: string | RouteParamValue[]) => {
     try {
       common.isLoading = true
-      const { data } = await apolloClient
+      const {data} = await apolloClient
         .query({
           query: QUERY_INCOMING_ALERT,
-          variables: { incomingAlertId: id },
+          variables: {incomingAlertId: id},
         })
         .finally(() => (common.isLoading = false))
       item.value.id = data.incomingAlert.id
@@ -204,16 +232,16 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
         totalCount.value = msg.totalCount ?? pagedItems.value.length
 
         if (pagedItems.value.length !== totalCount.value) {
-          await onLazyLoad({ first: pageSize.value * page.value, rows: pageSize.value })
+          await onLazyLoad({first: pageSize.value * page.value, rows: pageSize.value})
         }
       },
     },
   ]
 
-  subscriptions.forEach(({ query, handler }) => {
-    const { onResult } = useSubscription(query)
+  subscriptions.forEach(({query, handler}) => {
+    const {onResult} = useSubscription(query)
 
-    onResult(({ data }) => {
+    onResult(({data}) => {
       if (!data) return
 
       // Name des Subscription-Felds herausfinden
@@ -227,10 +255,10 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   })
 
   // ✅ CREATE
-  const { mutate: createMutateIncomingAlert, loading: creatingLoading } = useMutation(
+  const {mutate: createMutateIncomingAlert, loading: creatingLoading} = useMutation(
     MUTATIONEN_CREATE_INCOMING_ALERT,
     {
-      update(cache, { data }) {
+      update(cache, {data}) {
         if (!data?.createIncomingAlert) return
         cache.modify({
           fields: {
@@ -267,7 +295,7 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   }
 
   // ✅ UPDATE
-  const { mutate: updateMutateIncomingAlert, loading: updatingLoading } = useMutation(
+  const {mutate: updateMutateIncomingAlert, loading: updatingLoading} = useMutation(
     MUTATIONEN_UPDATE_INCOMING_ALERT,
   )
 
@@ -288,12 +316,12 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
   }
 
   // ✅ DELETE
-  const { mutate: deleteMutateIncomingAlert, loading: deletingLoading } = useMutation(
+  const {mutate: deleteMutateIncomingAlert, loading: deletingLoading} = useMutation(
     MUTATIONEN_DELETE_INCOMING_ALERT,
   )
 
   const deleteItem = async (ids: (string | undefined)[]) => {
-    const result = await deleteMutateIncomingAlert({ ids })
+    const result = await deleteMutateIncomingAlert({ids})
 
     if (result?.data?.deleteIncomingAlert?.deleted) {
       const resultItems: IncomingAlert[] = result?.data?.deleteIncomingAlert.deleted
@@ -325,7 +353,7 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
    * Route zum neuen Eintrag
    */
   const routeToNewItem = () => {
-    return { name: 'incoming-alert-new' }
+    return {name: 'incoming-alert-new'}
   }
 
   /**
@@ -333,7 +361,7 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
    * @param item
    */
   const routeToEditItem = (item: IncomingAlert) => {
-    return { name: 'incoming-alert-edit', params: { id: item.id } }
+    return {name: 'incoming-alert-edit', params: {id: item.id}}
   }
 
   /**
@@ -341,7 +369,7 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
    * @param item
    */
   const routeToDeleteItem = (item: IncomingAlert) => {
-    return { name: 'incoming-alert-delete', params: { id: item.id } }
+    return {name: 'incoming-alert-delete', params: {id: item.id}}
   }
 
   const getLastIncomingAlert: ComputedRef<IncomingAlert> = computed(() => {

@@ -51,7 +51,7 @@ export const useMessageStore = defineStore('messageStore', () => {
   const allItems: Ref<Message[]> = ref<Message[]>([])
   const totalCount: Ref<number> = ref(0)
   // Spalten für die Sortierung
-  const multiSortMeta: DataTableSortMeta[] = [{ field: 'createdAt', order: -1 }]
+  const multiSortMeta: Ref<DataTableSortMeta[]> = ref([{field: 'createdAt', order: -1}])
 
   const filters: Ref<DataTableFilterMeta> = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -70,8 +70,9 @@ export const useMessageStore = defineStore('messageStore', () => {
    * Spalten für die Tabelle
    */
   const columns: Ref<CustomColumnProps[]> = ref([
-    { field: 'id', header: '#', defaultShowing: false, dataType: 'text' },
+    {columnKey: 'message-id', field: 'id', header: '#', defaultShowing: false, dataType: 'text'},
     {
+      columnKey: 'message-icon-path',
       field: 'icon.path',
       header: 'Vorschau',
       defaultShowing: true,
@@ -81,19 +82,57 @@ export const useMessageStore = defineStore('messageStore', () => {
       headerClass: 'w-30',
       bodyClass: 'text-center place-items-center',
     },
-    { field: 'headline', header: 'Überschrift', defaultShowing: true, dataType: 'text' },
-    { field: 'message', header: 'Meldung', defaultShowing: true, dataType: 'text' },
-    { field: 'iconId', header: 'ID des Icon', defaultShowing: false, dataType: 'text' },
-    { field: 'icon', header: 'Icon', defaultShowing: false, dataType: 'text' },
-    { field: 'sorting', header: 'Sortierung', defaultShowing: true, dataType: 'numeric' },
-    { field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text' },
     {
+      columnKey: 'message-headline',
+      field: 'headline',
+      header: 'Überschrift',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-message',
+      field: 'message',
+      header: 'Meldung',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-iconId',
+      field: 'iconId',
+      header: 'ID des Icon',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-icon',
+      field: 'icon',
+      header: 'Icon',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-sorting',
+      field: 'sorting',
+      header: 'Sortierung',
+      defaultShowing: false,
+      dataType: 'numeric'
+    },
+    {
+      columnKey: 'message-comment',
+      field: 'comment',
+      header: 'Kommentar',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-createdAt',
       field: 'createdAt',
       header: 'erstellt am',
       dataType: 'date',
       defaultShowing: false,
     },
     {
+      columnKey: 'message-updatedAt',
       field: 'updatedAt',
       header: 'letzte bearbeitung',
       dataType: 'date',
@@ -152,7 +191,8 @@ export const useMessageStore = defineStore('messageStore', () => {
       | DataTablePageEvent
       | DataTableSortEvent
       | DataTableFilterEvent
-      | { first: number; rows: number },
+      | { first: number; rows: number }
+      | { first: number; rows: number, multiSortMeta: DataTableSortMeta }
   ): Promise<void> => {
     common.isLoading = true
 

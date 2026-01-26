@@ -9,6 +9,7 @@ const store = useMessageStore()
 <template>
   <!--  Tabelle -->
   <DefaultTable
+    state-key="dataTable-messages"
     :store="store"
     :delete-disabled="false"
   />

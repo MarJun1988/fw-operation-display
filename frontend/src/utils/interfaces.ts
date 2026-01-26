@@ -54,6 +54,15 @@ export interface SiteStyle {
   updatedAt?: Date | null
 }
 
+export interface Version {
+  id?: string
+  versionNumber: string
+  description: string
+  comment?: string | null
+  createdAt?: Date
+  updatedAt?: Date | null
+}
+
 export interface CustomColumnProps extends ColumnProps {
   defaultShowing?: boolean
   filterNotShowing?: boolean
@@ -159,3 +168,21 @@ export interface Coordinates {
   lat: number
   lon: number
 }
+
+
+// Version ICON
+export interface SubscriptionDeleteVersion {
+  deleted: Version[]
+  totalCount: number
+}
+
+export type SubscriptionMessagesVersions = {
+  versionCreated: Version
+  versionUpdated: Version
+  versionDeleted: SubscriptionDeleteVersion
+}
+
+export type AnySubscriptionVersion =
+  | SubscriptionConfig<SubscriptionMessagesVersions['versionCreated']>
+  | SubscriptionConfig<SubscriptionMessagesVersions['versionUpdated']>
+  | SubscriptionConfig<SubscriptionMessagesVersions['versionDeleted']>

@@ -98,6 +98,16 @@ const deleteMessage = () => {
     <MessageError v-if="isReadOnly" />
     <!-- Hauptinhalt -->
     <div class="grid grid-cols-4 gap-7 mt-7">
+      <!-- Textmeldung -->
+      <Message
+        class="col-span-4 mb-2"
+        icon="pi pi-exclamation-triangle"
+        pt:text:class="font-bold !text-2xl w-full text-center"
+        severity="error"
+        size="large"
+      >
+        Wollen Sie diesen Eintrag löschen?
+      </Message>
       <!-- einzelne Eingabefelder -->
       <DialogMessage />
     </div>

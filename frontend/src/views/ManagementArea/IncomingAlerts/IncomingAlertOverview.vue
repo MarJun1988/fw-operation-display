@@ -10,6 +10,7 @@ const store = useIncomingAlertStore()
   <!--  Tabelle -->
   <DefaultTable
     :store="store"
+    state-key="dataTable-incoming-alerts"
     :delete-disabled="false"
   />
 </template>

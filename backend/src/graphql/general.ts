@@ -119,7 +119,7 @@ export const resolvers = {
             }
 
             // ↕️ 3️⃣ Sortierung
-            let orderBy: any = {sorting: 'asc'}
+            let orderBy: any = {}
 
             if (Array.isArray(multiSortMeta) && multiSortMeta.length > 0) {
                 orderBy = multiSortMeta.map((s) => ({

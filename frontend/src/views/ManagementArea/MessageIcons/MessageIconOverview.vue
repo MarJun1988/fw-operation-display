@@ -10,6 +10,7 @@ const store = useMessageIconStore()
   <!--  Tabelle -->
   <DefaultTable
     :store="store"
+    state-key="dataTable-message-icons"
     :delete-disabled="false"
   />
 </template>

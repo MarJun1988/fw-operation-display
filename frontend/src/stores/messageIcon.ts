@@ -41,7 +41,7 @@ export const useMessageIconStore = defineStore('messageIconStore', () => {
   const allItems: Ref<MessageIcon[]> = ref<MessageIcon[]>([])
   const totalCount: Ref<number> = ref(0)
   // Spalten für die Sortierung
-  const multiSortMeta: DataTableSortMeta[] = [{ field: 'name', order: -1 }]
+  const multiSortMeta: Ref<DataTableSortMeta[]> = ref([{field: 'name', order: -1}])
 
   const filters: Ref<DataTableFilterMeta> = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -56,8 +56,15 @@ export const useMessageIconStore = defineStore('messageIconStore', () => {
    * Spalten für die Tabelle
    */
   const columns: Ref<CustomColumnProps[]> = ref([
-    { field: 'id', header: '#', defaultShowing: false, dataType: 'text' },
     {
+      columnKey: 'message-icon-id',
+      field: 'id',
+      header: '#',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-icon-path-preview',
       field: 'path',
       header: 'Vorschau',
       defaultShowing: true,
@@ -67,16 +74,36 @@ export const useMessageIconStore = defineStore('messageIconStore', () => {
       headerClass: 'w-30',
       bodyClass: 'text-center place-items-center',
     },
-    { field: 'name', header: 'Bezeichnung', defaultShowing: true, dataType: 'text' },
-    { field: 'path', header: 'Pfade', defaultShowing: false, dataType: 'text' },
-    { field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text' },
     {
+      columnKey: 'message-icon-name',
+      field: 'name',
+      header: 'Bezeichnung',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-icon-path',
+      field: 'path',
+      header: 'Pfade',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-icon-comment',
+      field: 'comment',
+      header: 'Kommentar',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'message-icon-createdAt',
       field: 'createdAt',
       header: 'erstellt am',
       dataType: 'date',
       defaultShowing: false,
     },
     {
+      columnKey: 'message-icon-updatedAt',
       field: 'updatedAt',
       header: 'letzte bearbeitung',
       dataType: 'date',
@@ -131,7 +158,8 @@ export const useMessageIconStore = defineStore('messageIconStore', () => {
       | DataTablePageEvent
       | DataTableSortEvent
       | DataTableFilterEvent
-      | { first: number; rows: number },
+      | { first: number; rows: number }
+      | { first: number; rows: number, multiSortMeta: DataTableSortMeta }
   ): Promise<void> => {
     common.isLoading = true
 

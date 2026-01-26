@@ -1,11 +1,6 @@
-FROM alpine:3.18
-
-RUN apk add --no-cache postgresql-client bash
+FROM postgres:16-alpine
 
 COPY backup.sh /backup.sh
-
-# ENV Variablen können aus docker-compose kommen
-ENV DATABASE_URL=""
 
 RUN chmod +x /backup.sh
 

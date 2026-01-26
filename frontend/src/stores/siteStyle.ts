@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia'
-import { computed, nextTick, type Ref, ref, watch } from 'vue'
-import { provideApolloClient, useMutation, useSubscription } from '@vue/apollo-composable'
+import {defineStore} from 'pinia'
+import {computed, nextTick, type Ref, ref, watch} from 'vue'
+import {provideApolloClient, useMutation, useSubscription} from '@vue/apollo-composable'
 
-import { apolloClient } from '../apollo'
+import {apolloClient} from '../apollo'
 import type {
   AnySubscriptionSiteStyle,
   CustomColumnProps,
@@ -10,7 +10,7 @@ import type {
   SubscriptionDeleteSiteStyle,
 } from '@/utils/interfaces.ts'
 import gql from 'graphql-tag'
-import { useCommonStore } from '@/stores/common.ts'
+import {useCommonStore} from '@/stores/common.ts'
 import {
   MUTATIONEN_CREATE_SITE_STYLE,
   MUTATIONEN_DELETE_SITE_STYLE,
@@ -22,11 +22,11 @@ import {
   SUBSCRIPTION_SITE_STYLE_DELETED,
   SUBSCRIPTION_SITE_STYLE_UPDATED,
 } from '@/utils/graphql.ts'
-import type { DataTableFilterMeta, DataTableSortMeta } from 'primevue/datatable'
-import { FilterMatchMode } from '@primevue/core/api'
-import type { DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent } from 'primevue'
-import type { RouteParamValue } from 'vue-router'
-import { devLog } from '@/utils/utils.ts' // 🧠 Apollo-Kontext manuell bereitstellen
+import type {DataTableFilterMeta, DataTableSortMeta} from 'primevue/datatable'
+import {FilterMatchMode} from '@primevue/core/api'
+import type {DataTableFilterEvent, DataTablePageEvent, DataTableSortEvent} from 'primevue'
+import type {RouteParamValue} from 'vue-router'
+import {devLog} from '@/utils/utils.ts' // 🧠 Apollo-Kontext manuell bereitstellen
 
 // 🧠 Apollo-Kontext manuell bereitstellen
 provideApolloClient(apolloClient)
@@ -47,39 +47,77 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   const allItems: Ref<SiteStyle[]> = ref<SiteStyle[]>([])
   const totalCount: Ref<number> = ref(0)
   // Spalten für die Sortierung
-  const multiSortMeta: DataTableSortMeta[] = [{ field: 'sorting', order: -1 }]
+  const multiSortMeta: Ref<DataTableSortMeta[]> = ref([{field: 'sorting', order: 1}])
 
   const filters: Ref<DataTableFilterMeta> = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    description: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    htmlStyle: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    htmlClass: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    sorting: { value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    name: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    description: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    htmlStyle: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    htmlClass: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    sorting: {value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   })
 
   /**
    * Spalten für die Tabelle
    */
   const columns: Ref<CustomColumnProps[]> = ref([
-    { field: 'id', header: '#', defaultShowing: false, dataType: 'text' },
-    { field: 'name', header: 'Name', defaultShowing: true, dataType: 'text' },
-    { field: 'description', header: 'Beschreibung', defaultShowing: true, dataType: 'text' },
-    { field: 'htmlStyle', header: 'Style (CSS)', defaultShowing: false, dataType: 'text' },
-    { field: 'htmlClass', header: 'Class (CSS)', defaultShowing: true, dataType: 'text' },
-    { field: 'sorting', header: 'Sortierung', defaultShowing: true, dataType: 'numeric' },
-    { field: 'comment', header: 'Kommentar', defaultShowing: false, dataType: 'text' },
+    {columnKey: 'site-style-id', field: 'id', header: '#', defaultShowing: false, dataType: 'text'},
     {
+      columnKey: 'site-style-name',
+      field: 'name',
+      header: 'Name',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'site-style-description',
+      field: 'description',
+      header: 'Beschreibung',
+      defaultShowing: true,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'site-style-htmlStyle',
+      field: 'htmlStyle',
+      header: 'Style (CSS)',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'site-style-htmlClass',
+      field: 'htmlClass',
+      header: 'Class (CSS)',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'site-style-sorting',
+      field: 'sorting',
+      header: 'Sortierung',
+      defaultShowing: false,
+      dataType: 'numeric'
+    },
+    {
+      columnKey: 'site-style-comment',
+      field: 'comment',
+      header: 'Kommentar',
+      defaultShowing: false,
+      dataType: 'text'
+    },
+    {
+      columnKey: 'site-style-createdAt',
       field: 'createdAt',
       header: 'erstellt am',
       dataType: 'date',
       defaultShowing: false,
     },
     {
+      columnKey: 'site-style-updatedAt',
       field: 'updatedAt',
       header: 'letzte bearbeitung',
       dataType: 'date',
@@ -89,16 +127,16 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
 
   // Definierung der Filter
   const defaultFilters = {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    name: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    description: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    htmlStyle: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    htmlClass: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    sorting: { value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-    comment: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    createdAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
-    updatedAt: { value: null, matchMode: FilterMatchMode.DATE_IS },
+    global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    name: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    description: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    htmlStyle: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    htmlClass: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    sorting: {value: null, matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO},
+    comment: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    createdAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
+    updatedAt: {value: null, matchMode: FilterMatchMode.DATE_IS},
   }
 
   // Pagination-Zustand
@@ -113,21 +151,21 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
       ...item,
       createdAt: item.createdAt
         ? new Date(item.createdAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
       updatedAt: item.updatedAt
         ? new Date(item.updatedAt).toLocaleTimeString('de-DE', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        })
         : null,
     }
   }
@@ -137,7 +175,8 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
       | DataTablePageEvent
       | DataTableSortEvent
       | DataTableFilterEvent
-      | { first: number; rows: number },
+      | { first: number; rows: number }
+      | { first: number; rows: number, multiSortMeta: DataTableSortMeta }
   ): Promise<void> => {
     common.isLoading = true
 
@@ -146,9 +185,9 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
     await new Promise((resolve) => setTimeout(resolve)) // micro delay (1 frame)
 
     try {
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: QUERY_SITE_STYLE_PAGED,
-        variables: { page: event },
+        variables: {page: event},
         fetchPolicy: 'no-cache',
       })
 
@@ -165,10 +204,10 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   const fetchOnlyItem = async (id: string | RouteParamValue[]) => {
     try {
       common.isLoading = true
-      const { data } = await apolloClient
+      const {data} = await apolloClient
         .query({
           query: QUERY_SITE_STYLE,
-          variables: { siteStyleId: id },
+          variables: {siteStyleId: id},
         })
         .finally(() => (common.isLoading = false))
       item.value.id = data.siteStyle.id
@@ -195,7 +234,7 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   const fetchAllItems = async () => {
     common.isLoading = true
     try {
-      const { data } = await apolloClient.query({
+      const {data} = await apolloClient.query({
         query: QUERY_SITE_STYLES,
       })
       allItems.value = data.siteStyles.map(mapSiteStyleDates)
@@ -241,16 +280,16 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
         totalCount.value = msg.totalCount ?? pagedItems.value.length
 
         if (pagedItems.value.length !== totalCount.value) {
-          await onLazyLoad({ first: pageSize.value * page.value, rows: pageSize.value })
+          await onLazyLoad({first: pageSize.value * page.value, rows: pageSize.value})
         }
       },
     },
   ]
 
-  subscriptions.forEach(({ query, handler }) => {
-    const { onResult } = useSubscription(query)
+  subscriptions.forEach(({query, handler}) => {
+    const {onResult} = useSubscription(query)
 
-    onResult(({ data }) => {
+    onResult(({data}) => {
       if (!data) return
 
       // Name des Subscription-Felds herausfinden
@@ -264,10 +303,10 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   })
 
   // ✅ CREATE
-  const { mutate: createMutateSiteStyle, loading: creatingLoading } = useMutation(
+  const {mutate: createMutateSiteStyle, loading: creatingLoading} = useMutation(
     MUTATIONEN_CREATE_SITE_STYLE,
     {
-      update(cache, { data }) {
+      update(cache, {data}) {
         if (!data?.createSiteStyle) return
         cache.modify({
           fields: {
@@ -310,7 +349,7 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   }
 
   // ✅ UPDATE
-  const { mutate: updateMutateSiteStyle, loading: updatingLoading } = useMutation(
+  const {mutate: updateMutateSiteStyle, loading: updatingLoading} = useMutation(
     MUTATIONEN_UPDATE_SITE_STYLE,
   )
 
@@ -334,12 +373,12 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
   }
 
   // ✅ DELETE
-  const { mutate: deleteMutateSiteStyle, loading: deletingLoading } = useMutation(
+  const {mutate: deleteMutateSiteStyle, loading: deletingLoading} = useMutation(
     MUTATIONEN_DELETE_SITE_STYLE,
   )
 
   const deleteItem = async (ids: (string | undefined)[]) => {
-    const result = await deleteMutateSiteStyle({ ids })
+    const result = await deleteMutateSiteStyle({ids})
 
     if (result?.data?.deleteSiteStyle?.deleted) {
       const resultItems: SiteStyle[] = result?.data?.deleteSiteStyle.deleted
@@ -370,7 +409,7 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
    * Route zum neuen Eintrag
    */
   const routeToNewItem = () => {
-    return { name: 'site-style-new' }
+    return {name: 'site-style-new'}
   }
 
   /**
@@ -378,7 +417,7 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
    * @param item
    */
   const routeToEditItem = (item: SiteStyle) => {
-    return { name: 'site-style-edit', params: { id: item.id } }
+    return {name: 'site-style-edit', params: {id: item.id}}
   }
 
   /**
@@ -386,7 +425,7 @@ export const useSiteStyleStore = defineStore('siteStyleStore', () => {
    * @param item
    */
   const routeToDeleteItem = (item: SiteStyle) => {
-    return { name: 'site-style-delete', params: { id: item.id } }
+    return {name: 'site-style-delete', params: {id: item.id}}
   }
 
   // ------------------------------------------------------

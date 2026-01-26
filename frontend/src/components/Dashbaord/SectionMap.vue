@@ -1,23 +1,24 @@
 <script lang="ts" setup>
-import { nextTick, type Ref, ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useIncomingAlertStore } from '@/stores/incomingAlert.ts'
-import { useSiteStyles } from '@/composables/useSiteStyles.ts'
-import { useGenerals } from '@/composables/useGenerals.ts'
-import type { Coordinates } from '@/utils/interfaces.ts'
+import {nextTick, type Ref, ref, watch} from 'vue'
+import {storeToRefs} from 'pinia'
+import {useIncomingAlertStore} from '@/stores/incomingAlert.ts'
+import {useSiteStyles} from '@/composables/useSiteStyles.ts'
+import {useGenerals} from '@/composables/useGenerals.ts'
+import type {Coordinates} from '@/utils/interfaces.ts'
 import 'leaflet/dist/leaflet.css'
-import type { Map as LeafletMap } from 'leaflet'
+import type {Map as LeafletMap} from 'leaflet'
 import L from 'leaflet'
-import { devLog } from '@/utils/utils.ts'
+import {devLog} from '@/utils/utils.ts'
 // Fix fehlender Marker-Icons im Build
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
+// import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 // Pinia Stores
 const storeIncomingAlert = useIncomingAlertStore()
-const { getLastIncomingAlertAddress } = storeToRefs(storeIncomingAlert)
+const {getLastIncomingAlertAddress} = storeToRefs(storeIncomingAlert)
 // Generals
-const { getValue, ready } = useGenerals()
+const {getValue, ready} = useGenerals()
 
 const fireDepartmentAddress = getValue('fire_department_address')
 const defaultMapZoom = getValue('default_map_zoom')
@@ -25,7 +26,7 @@ const defaultMapZoom = getValue('default_map_zoom')
 devLog('defaultMapZoom', defaultMapZoom.value)
 
 // Styles
-const { style } = useSiteStyles()
+const {style} = useSiteStyles()
 
 const section3 = style('section_3')
 
@@ -33,7 +34,7 @@ const section3 = style('section_3')
  * Coordinates for the Map on the Dashboard
  * Default Value ist the Department from the Database
  */
-const mapCoords: Ref<Coordinates> = ref({ lat:0, lon:0 })
+const mapCoords: Ref<Coordinates> = ref({lat: 0, lon: 0})
 
 // Patch für Leaflet Tooltip / Popup Animation
 // @ts-ignore
@@ -77,7 +78,7 @@ async function updateMap(addr: string | null) {
 
   try {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr ? addr : fireDepartmentAddress.value)}&format=json&limit=1`
-    const resp = await fetch(url, { headers: { 'Accept-Language': 'de' } })
+    const resp = await fetch(url, {headers: {'Accept-Language': 'de'}})
     const data = await resp.json()
     devLog('Fetch Coordinates for incoming', data)
     if (data.length > 0 && data[0].lat && data[0].lon && data[0].display_name) {
@@ -134,7 +135,7 @@ watch(
       await updateMap(null)
     }
   },
-  { immediate: true },
+  {immediate: true},
 )
 </script>
 
