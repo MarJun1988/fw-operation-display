@@ -1,35 +1,13 @@
 <script lang="ts" setup>
 import NavigationTabs from '@/components/NavigationTabs.vue'
-import {useVersionStore} from "@/stores/version.ts";
-import {storeToRefs} from "pinia";
-import {onMounted} from "vue";
-
-const store = useVersionStore()
-const {lastVersion} = storeToRefs(store)
-
-onMounted(async () => {
-  await store.fetchAllItems()
-})
-
 </script>
 
 <template>
-  <router-link
-    class="fixed z-10 top-0 w-full flex justify-center m-1"
-    to="/dashboard"
-  >
-    <Button
-      icon="pi pi-reply"
-      label="zum Alarmierungsbildschirm"
-      severity="danger"
-      size="small"
-    />
+  <router-link class="fixed z-10 top-0 w-full flex justify-center m-1" to="/dashboard">
+    <Button icon="pi pi-reply" label="zum Alarmierungsbildschirm" severity="danger" size="small" />
   </router-link>
   <!-- Navigationsleiste -->
-  <NavigationTabs
-    class="sticky top-0 mt-10 z-5"
-    parent-name="management-area"
-  />
+  <NavigationTabs class="sticky top-0 mt-10 z-5" parent-name="management-area" />
 
   <Card class="w-10/12 m-auto mt-4">
     <template #content>
@@ -38,12 +16,7 @@ onMounted(async () => {
   </Card>
 
   <div class="w-10/12 m-auto mt-4 mb-4 pr-5 text-center flex gap-2 justify-end">
-    <svg
-      class="h-5"
-      viewBox="0 0 128 128"
-      xml:space="preserve"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg class="h-5" viewBox="0 0 128 128" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
       <path
         d="m124.755 51.382-.177-.452L107.47 6.282a4.459 4.459 0 0 0-1.761-2.121 4.581 4.581 0 0 0-5.236.281 4.578 4.578 0 0 0-1.518 2.304L87.404 42.088H40.629L29.077 6.746a4.492 4.492 0 0 0-1.518-2.31 4.581 4.581 0 0 0-5.236-.281 4.502 4.502 0 0 0-1.761 2.121L3.422 50.904l-.17.452c-5.059 13.219-.763 28.192 10.537 36.716l.059.046.157.111 26.061 19.516 12.893 9.758 7.854 5.93a5.283 5.283 0 0 0 6.388 0l7.854-5.93 12.893-9.758 26.218-19.634.065-.052c11.273-8.526 15.562-23.472 10.524-36.677z"
         fill="#E24329"
@@ -61,19 +34,17 @@ onMounted(async () => {
         fill="#FC6D26"
       />
     </svg>
-    <a
-      class="text-sm"
-      href="https://gitlab.com/MarJun1988/fw-operation-display"
-      target="_blank"
+    <a class="text-sm" href="https://gitlab.com/MarJun1988/fw-operation-display" target="_blank">
+      GitLab</a
     >
-      GitLab</a>
     <span class="text-sm">|</span>
     <a
-      class="text-sm"
       href="https://gitlab.com/MarJun1988/fw-operation-display/-/releases"
       target="_blank"
+      class="text-sm"
     >
-      Fw-Display {{ lastVersion?.versionNumber }}</a>
+      Fw-Display 2.0.0</a
+    >
   </div>
   <!--  Dialogfelder -->
   <router-view name="dialog" />

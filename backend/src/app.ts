@@ -25,7 +25,6 @@ import { typeDefs as incomingAlertTypeDefs, resolvers as incomingAlertResolvers 
 import { typeDefs as messageTypeDefs, resolvers as messageResolvers  } from './graphql/message.js'
 import { typeDefs as messageIconTypeDefs, resolvers as messageIconResolvers } from './graphql/messageIcon.js'
 import { typeDefs as siteStyleTypeDefs, resolvers as siteStyleResolvers } from './graphql/siteStyle.js'
-import {typeDefs as versionTypeDefs, resolvers as versionResolvers} from './graphql/version.js'
 
 const typeDefs = mergeTypeDefs([
     rootTypeDefs,
@@ -33,8 +32,7 @@ const typeDefs = mergeTypeDefs([
     messageTypeDefs,
     messageIconTypeDefs,
     incomingAlertTypeDefs,
-    siteStyleTypeDefs,
-    versionTypeDefs
+    siteStyleTypeDefs
 ])
 
 const resolvers = mergeResolvers([
@@ -42,8 +40,7 @@ const resolvers = mergeResolvers([
     messageResolvers,
     incomingAlertResolvers,
     messageIconResolvers,
-    siteStyleResolvers,
-    versionResolvers
+    siteStyleResolvers
 ])
 
 export const schema = makeExecutableSchema({

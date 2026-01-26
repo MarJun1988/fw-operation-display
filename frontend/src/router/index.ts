@@ -1,5 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import {useGeneralStore} from "@/stores/general.ts";
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -308,64 +307,6 @@ const router = createRouter({
             },
           ],
         },
-        // Version
-        {
-          path: '/management-area/version',
-          name: 'version',
-          meta: {
-            label: 'Version',
-            icon: 'pi pi-check-circle',
-          },
-          redirect: '/management-area/version/overview',
-          children: [
-            {
-              path: '/management-area/version/overview',
-              name: 'version-overview',
-              components: {
-                default: () =>
-                  import('@/views/ManagementArea/Version/VersionOverview.vue'),
-              },
-            },
-            {
-              path: '/management-area/version/new',
-              name: 'version-new',
-              components: {
-                default: () =>
-                  import('@/views/ManagementArea/Version/VersionOverview.vue'),
-                dialog: () =>
-                  import('@/views/ManagementArea/Version/VersionDialog.vue'),
-              },
-            },
-            {
-              path: '/management-area/version/edit/:id',
-              name: 'version-edit',
-              components: {
-                default: () =>
-                  import('@/views/ManagementArea/Version/VersionOverview.vue'),
-                dialog: () =>
-                  import('@/views/ManagementArea/Version/VersionDialog.vue'),
-              },
-              props: {
-                default: false, // Route-Params als Props für GroundSettingOverview
-                dialog: true, // Route-Params als Props für GroundSettingDialog
-              },
-            },
-            {
-              path: '/management-area/version/delete/:id',
-              name: 'version-delete',
-              components: {
-                default: () =>
-                  import('@/views/ManagementArea/Version/VersionOverview.vue'),
-                dialog: () =>
-                  import('@/views/ManagementArea/Version/VersionDialogDelete.vue'),
-              },
-              props: {
-                default: false, // Route-Params als Props für GroundSettingOverview
-                dialog: true, // Route-Params als Props für GroundSettingDialog
-              },
-            },
-          ],
-        },
       ],
     },
 
@@ -375,25 +316,6 @@ const router = createRouter({
       component: () => import('@/views/NotFound.vue'),
     },
   ],
-})
-
-router.beforeEach(async (to) => {
-  const storeGeneral = useGeneralStore()
-
-  // DB-Werte einmal laden
-  if (!storeGeneral.isBusy) {
-    await storeGeneral.fetchAllItems()
-  }
-
-  const baseTitle = storeGeneral.getSiteTitle
-
-  // optional: Route-spezifisch
-  const routeTitle =
-    typeof to.meta.label === 'string'
-      ? ` – ${to.meta.label}`
-      : ''
-
-  document.title = `${baseTitle}${routeTitle}`
 })
 
 export default router

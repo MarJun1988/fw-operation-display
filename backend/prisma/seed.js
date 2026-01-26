@@ -496,39 +496,6 @@ const DEFAULT_SITE_STYLES = [
   },
 ]
 
-const DEFAULT_VERSIONS = [
-    {
-        versionNumber: 'v.2.0.3',
-        description: 'Ein kleiner Bug wurde behoben: Der Seitentitel wird jetzt korrekt aus der Datenbank ausgelesen und angezeigt.',
-        createdAt: '2025-12-16T15:00:00Z',
-    },
-    {
-        versionNumber: 'v.2.0.2',
-        description: 'Eine saubere Versionierung wurde eingeführt. Ansonsten sollte alles stabil über die CI/CD-Pipelines weiterlaufen.',
-        createdAt: '2025-12-15T21:00:00Z',
-    },
-    {
-        versionNumber: 'v.2.0.1',
-        description: 'Ein kleiner Bug wurde behoben, bei dem die Adresse nicht immer korrekt aus dem Alarm extrahiert wurde. Dieses Problem sollte nun behoben sein.',
-        createdAt: '2025-12-15T14:40:00Z',
-    },
-    {
-        versionNumber: 'v.2.0.0',
-        description: 'Alles neu macht der Dezember: Mit Version 2.0.0 wird ein komplett überarbeitetes Release eingeführt. Das Frontend basiert nun auf Vue.js, das Backend auf Node.js mit Apollo GraphQL inklusive Subscriptions. Neu hinzugekommen ist außerdem eine Kartenfunktion mit Einsatzadresse.',
-        createdAt: '2025-12-07T12:00:00Z',
-    },
-    {
-        versionNumber: 'v.1.0.1',
-        description: 'Wie so oft im Feinschliff: Die Anwendung läuft nun deutlich flüssiger und die Auswertung ist präziser.',
-        createdAt: '2023-10-13T12:00:00Z',
-    },
-    {
-        versionNumber: 'v.1.0.0',
-        description: 'Die erste Version der Anwendung, optimiert für einen Einplatinencomputer. Umgesetzt mit Symfony 6 im Backend und Vue.js als Frontend-Framework.',
-        createdAt: '2022-10-03T12:00:00Z',
-    },
-];
-
 // --- General Settings ---
 const generals = Object.entries(DEFAULT_GENERALS).map(([, val], index) => ({
   name: val.name,
@@ -554,13 +521,6 @@ const messageIcons = Object.entries(DEFAULT_MESSAGE_ICONS).map(([, val]) => ({
   name: val.name,
   path: val.path,
   comment: 'Standard Layout des Web Anwendung',
-}))
-
-// --- General Settings ---
-const versions = Object.entries(DEFAULT_VERSIONS).map(([, val]) => ({
-    versionNumber: val.versionNumber,
-    description: val.description,
-    createdAt: val.createdAt,
 }))
 
 // ----------------------------------------------------------------
@@ -659,36 +619,6 @@ export default async function seed() {
     // eslint-disable-next-line no-undef
     console.log(` -------- `)
   }
-
-    // --- Versions ---
-    if (versions && versions.length > 0) {
-        // eslint-disable-next-line no-undef
-        console.log(`Seeding Versions (${versions.length})`)
-        for (const version of versions) {
-            await prisma.version.upsert({
-                where: {versionNumber: version.versionNumber},
-                update: allowUpdate
-                    ? {
-                        versionNumber: version.versionNumber,
-                        description: version.description,
-                        createdAt: version.createdAt,
-                    }
-                    : {},
-
-                // update: {}, // 🔥 WICHTIG: nichts überschreiben
-                // update: {
-                //     value: general.value,
-                //     comment: general.comment
-                // },
-                create: version,
-            })
-        }
-        // eslint-disable-next-line no-undef
-        console.log(`Seeding Versions abgeschlossen`)
-        // eslint-disable-next-line no-undef
-        console.log(` -------- `)
-    }
-
   // eslint-disable-next-line no-undef
   console.log(' Seeding abgeschlossen!')
 }

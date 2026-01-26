@@ -1,17 +1,16 @@
 <script lang="ts" setup>
-import {storeToRefs} from 'pinia'
-import {computed, type ComputedRef, onMounted, ref, type Ref} from 'vue'
-import {useCommonStore} from '@/stores/common.ts'
-import type {CustomColumnProps, General, IncomingAlert} from '@/utils/interfaces.ts'
-import type {useIncomingAlertStore} from '@/stores/incomingAlert.ts'
-import type {useGeneralStore} from '@/stores/general.ts'
-import type {DataTableFilterMeta} from 'primevue/datatable'
-import type {DataTableFilterEvent, DataTableFilterMetaData} from 'primevue'
-import {type Router, useRouter} from 'vue-router'
-import {useMessageStore} from '@/stores/message.ts'
-import type {useMessageIconStore} from '@/stores/messageIcon.ts'
-import {useSiteStyleStore} from '@/stores/siteStyle.ts'
-import type {useVersionStore} from "@/stores/version.ts";
+import { storeToRefs } from 'pinia'
+import { computed, type ComputedRef, onMounted, ref, type Ref } from 'vue'
+import { useCommonStore } from '@/stores/common.ts'
+import type { CustomColumnProps, General, IncomingAlert } from '@/utils/interfaces.ts'
+import type { useIncomingAlertStore } from '@/stores/incomingAlert.ts'
+import type { useGeneralStore } from '@/stores/general.ts'
+import type { DataTableFilterMeta } from 'primevue/datatable'
+import type { DataTableFilterEvent, DataTableFilterMetaData } from 'primevue'
+import { type Router, useRouter } from 'vue-router'
+import { useMessageStore } from '@/stores/message.ts'
+import type { useMessageIconStore } from '@/stores/messageIcon.ts'
+import { useSiteStyleStore } from '@/stores/siteStyle.ts'
 
 // type GeneralStore = ReturnType<typeof useGeneralStore>
 type IncomingAlertStore = ReturnType<typeof useIncomingAlertStore>
@@ -19,18 +18,17 @@ type GeneralStore = ReturnType<typeof useGeneralStore>
 type MessageStore = ReturnType<typeof useMessageStore>
 type MessageIconStore = ReturnType<typeof useMessageIconStore>
 type SiteStyleStore = ReturnType<typeof useSiteStyleStore>
-type VersionStore = ReturnType<typeof useVersionStore>
 
 const props = defineProps<{
-  store: IncomingAlertStore | GeneralStore | MessageStore | MessageIconStore | SiteStyleStore | VersionStore
+  store: IncomingAlertStore | GeneralStore | MessageStore | MessageIconStore | SiteStyleStore
   deleteDisabled: Boolean
 }>()
 
 // Pinia Stores
 const storeCommon = useCommonStore()
 
-const {isLoading} = storeToRefs(storeCommon)
-const {pagedItems, totalCount, pageSize, columns} = storeToRefs(props.store)
+const { isLoading } = storeToRefs(storeCommon)
+const { pagedItems, totalCount, pageSize, columns } = storeToRefs(props.store)
 
 // Template Text für die Paginator (unter der Tabelle)
 const currentPageReportTemplate = `{first} bis {last} von {totalRecords} Einträgen`
@@ -53,10 +51,10 @@ const onToggle = (val: CustomColumnProps[]) => {
 }
 
 // Filter für die Tabelle
-const filters: Ref<DataTableFilterMeta> = ref({...props.store.defaultFilters})
+const filters: Ref<DataTableFilterMeta> = ref({ ...props.store.defaultFilters })
 
 // Erst Initialisierung des Filters
-const initFilters = () => (filters.value = {...props.store.defaultFilters})
+const initFilters = () => (filters.value = { ...props.store.defaultFilters })
 
 // Löschen der gesamten Werte
 const clearFilter = () => {
@@ -138,7 +136,7 @@ const tooltipButtonDeleteSelected: ComputedRef<string> = computed(() => {
 // Registers a callback to be called after the component has been mounted.
 onMounted(() => {
   storeCommon.isLoading = false
-  props.store.onLazyLoad({first: 0, rows: pageSize.value})
+  props.store.onLazyLoad({ first: 0, rows: pageSize.value })
 })
 
 const isDev: Ref<boolean> = ref(false)

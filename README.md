@@ -1,30 +1,5 @@
 # 🚒 FW Operation Display
-
-Feuerwehr Display ist ein webbasiertes Einsatz- und Informationsdashboard für Feuerwehren.
-Es ist optimiert für große Displays (z.B. Gerätehaus, Leitstelle) sowie für
-Raspberry-Pi-basierte Systeme.
-
-## ✨ Features
-- Live-Einsatzanzeige
-- Kartenansicht mit OpenStreetMap / Leaflet
-- Modulare, konfigurierbare Dashboard-Sektionen
-- Docker-first Architektur
-- Vollautomatisches CI/CD mit GitLab
-- Images-only Deployment (kein Git auf Zielsystemen)
-
-## 🏗️ Architektur
-- **Frontend**: Vue 3, Tailwind CSS, Nginx
-- **Backend**: Node.js, Apollo Server v4, Prisma
-- **Datenbank**: PostgreSQL
-- **Cache / PubSub**: Redis
-
-## 🚀 Production Start
-```bash
-docker compose -f docker-compose.prod.yml up -d
-```
-
-## 📜 Lizenz
-Dieses Projekt ist unter der MIT License lizenziert.
+Web Application Einsatzmonitor für Feuerwehr – optimiert für Raspberry Pi 4
 
 ---
 
