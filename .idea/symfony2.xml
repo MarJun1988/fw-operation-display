@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Symfony2PluginSettings">
+    <option name="pathToTranslation" value="web-app/var/cache/dev/translations" />
+    <option name="directoryToWeb" value="web-app/public" />
+    <option name="directoryToApp" value="web-app/" />
+    <option name="pluginEnabled" value="true" />
+    <option name="lastServiceGeneratorLanguage" value="yaml" />
+    <option name="twigNamespaces">
+      <list>
+        <twig_namespace custom="true" namespaceType="ADD_PATH" path="web-app/templates" />
+      </list>
+    </option>
+  </component>
+</project>

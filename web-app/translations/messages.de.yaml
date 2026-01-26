@@ -1,0 +1,288 @@
+# Komponenten
+components:
+  dataTable:
+    buttons:
+      addItem:
+        label: 'Eintrag hinzufügen'
+        icon: ''
+        tooltip: 'neuen Eintrag hinzufügen'
+      editItem:
+        label: 'Eintrag bearbeiten'
+        icon: 'pi pi-pencil'
+        tooltip: 'diesen Eintrag bearbeiten'
+      deleteItem:
+        label: 'Eintrag löschen'
+        icon: 'pi pi-trash'
+        tooltip: 'diesen Eintrag löschen'
+    columnActionsHeadline: 'Aktionen'
+    emptyItems: 'Es würden leider keine Elemente gefunden.'
+    loadingItems: 'Bitte warten, Daten werden abgerufen ...'
+    pageReportTemplateOne: 'bis'
+    pageReportTemplateTwo: 'von'
+    pageReportTemplateThree: 'Einträgen'
+    searchPlaceholder: 'Suche ...'
+    selectColumnsItems: 'Spalten Ausgewählt'
+    selectColumnsPlaceholder: 'Spalten Auswahl'
+
+  dialog:
+    buttonClose: 'schließen'
+    buttonCreate: 'erstellen'
+    buttonSave: 'speichern'
+    buttonDelete: 'löschen'
+    buttonAutoCloseOn: 'Dialog, wird automatisch geschlossen.'
+    buttonAutoCloseOff: 'Dialog bleibt offen nach aktion.'
+
+  toastMessage:
+    created:
+      title: 'Eintrag erstellt!'
+      message: 'Der Eintrag wurde erfolgreich angelegt.'
+    updated:
+      title: 'Eintrag bearbeitet!'
+      message: 'Die Speicherung der änderungen wurden ausgeführt.'
+    deleted:
+      title: 'Eintrag gelöscht!'
+      message: 'Die Löschung ist erfolgreich vollzogen.'
+    failed:
+      title: 'Ups, Fehler!'
+      message: 'Es ist leider ein Fehler aufgetreten.'
+    error:
+      title: 'Fehler'
+      message: 'Sollte der Fehler nach mal auftreten, dann Informieren Sie bitte den Administrator.'
+    noRight:
+      title: 'Keine Rechte!'
+      message: 'Sie haben leider keine Rechte dafür.'
+    reload:
+      title: 'Neuladen'
+      message: 'Die Daten wurden erfolgreich geladen.'
+
+# Bestätigungsdialoge
+confirmDialog:
+  delete:
+    header: 'Löschen Bestätigen'
+    message: 'Wollen Sie diesen Eintrag wirklich entfernen?'
+
+# Tabellen
+dataTables:
+  # Grundeinstellungen
+  groundSettings:
+    headline: 'Grundeinstellungen'
+    columns:
+      id: '#'
+      diveraUrl: 'URL Divera Monitor'
+      reloadTimeGeneral: 'Grundeinstellung - Autoneuladen in ms'
+      reloadTimeAlert: 'Alarmierungen - Autoneuladen in ms'
+      reloadTimeStyle: 'Darstellung (Style) - Autoneuladen in ms'
+      reloadTimeMessage: 'Mitteilungen - Autoneuladen in ms'
+      showReloadToast: 'Meldung an Anzeigen beim Reload'
+      comment: 'Kommentar'
+      createdAt: 'erstellt am'
+      updatedAt: 'letzte bearbeitung'
+  # Eingegangen Alarmierungen
+  incomingAlerts:
+    headline: 'Eingegangene Alarmierungen'
+    columns:
+      id: '#'
+      address: 'Adresse (RIC)'
+      text: 'Alarmtext'
+      comment: 'Kommentar'
+      createdAt: 'Datum - Uhrzeit'
+      updatedAt: 'letzte bearbeitung'
+  # Mitteilungen
+  messages:
+    headline: 'Mitteilungen'
+    columns:
+      id: '#'
+      headline: 'Überschrift'
+      message: 'Text'
+      comment: 'Kommentar'
+      createdAt: 'erstellt am'
+      updatedAt: 'letzte bearbeitung'
+  # Seiten Aussehen
+  siteStyles:
+    headline: 'Darstellungen (CSS)'
+    columns:
+      id: '#'
+      sorting: 'Sortierung'
+      name: 'Name'
+      description: 'Beschreibung'
+      style: 'Style'
+      comment: 'Kommentar'
+      createdAt: 'erstellt am'
+      updatedAt: 'letzte bearbeitung'
+
+# Dialoge
+dialogs:
+  # Grundeinstellungen
+  groundSetting:
+    headerTitle: 'Grundeinstellung'
+    fields:
+      diveraUrl:
+        label: 'URL Divera Monitor'
+        help: ''
+        maxlength: 255
+        minlength: 10
+        required: true
+      reloadTimeGeneral:
+        label: 'Grundeinstellung - Autoneuladen in ms'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      reloadTimeAlert:
+        label: 'Alarmierungen - Autoneuladen in ms'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      reloadTimeStyle:
+        label: 'Darstellung (Style) - Autoneuladen in ms'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      showReloadToast:
+        label: 'Anzeigen der Reload Nachricht'
+        help: ''
+        required: true
+      reloadTimeMessage:
+        label: 'Mitteilungen - Autoneuladen in ms'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      comment:
+        label: 'Kommentar'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: false
+  # Eingegangener Alarm
+  incomingAlert:
+    headerTitle: 'Eingegangener Alarm'
+    fields:
+      text:
+        label: 'Alarm Text'
+        help: ''
+        maxlength: 255
+        minlength: 1
+        required: true
+      address:
+        label: 'Adresse - RIC'
+        help: ''
+        maxlength: 10
+        minlength: 3
+        required: true
+      createdAt:
+        label: 'Eingang Datum-Uhrzeit'
+        help: ''
+        required: true
+      comment:
+        label: 'Kommentar'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: false
+  # Mitteilung
+  message:
+    headerTitle: 'Mitteilung'
+    fields:
+      headline:
+        label: 'Überschrift'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      message:
+        label: 'Text - Nachricht'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      comment:
+        label: 'Kommentar'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: false
+  # Darstellung
+  siteStyle:
+    headerTitle: 'Darstellung'
+    fields:
+      sorting:
+        label: 'Sortierung'
+        help: ''
+        maxlength: 5
+        minlength: 1
+        required: true
+      name:
+        label: 'Name'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      description:
+        label: 'Beschreibung'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: true
+      style:
+        label: 'Aussehen'
+        help: 'Es werden hier normale CSS dinge eingetragen!'
+        maxlength: 255
+        minlength: 3
+        required: false
+      comment:
+        label: 'Kommentar'
+        help: ''
+        maxlength: 255
+        minlength: 3
+        required: false
+
+# Nachrichten von Entities
+entityMessage:
+  failed: 'Es ist eine Fehler aufgetreten!'
+  notFound: 'Es wurde kein Eintrag gefunden!'
+  success: 'Erfolgreich ausgeführt!'
+
+# Allgemeines
+generals:
+  siteTitle: 'Feuerwehr Alarmierungsmonitor'
+  siteTitleShort: 'Fw Alarm Mon'
+  requiredFieldText: 'Erforderliches Feld'
+  numberOfCharacters: 'Zeichen: '
+
+# Menü
+menus:
+  mainMenu:
+    displayRaspberryPi:
+      label: 'Alarmierungsbildschirm'
+      children:
+    managementArea:
+      label: 'Verwaltung'
+      children:
+        groundSettings:
+          label: 'Grundeinstellungen'
+          icon: 'manage_history'
+        incomingAlerts:
+          label: 'Alarmierungen'
+          icon: 'notifications'
+        messages:
+          label: 'Mitteilungen'
+          icon: 'message'
+        siteStyle:
+          label: 'Darstellung der Seite'
+          icon: 'style'
+
+# Seiten
+sites:
+  # Monitor Divera
+  diveraMonitor:
+    come: 'komme'
+    doNotCome: 'komme nicht'
+    comeTenMinutesLater: 'komme > 10min'
+  # Darstellung von Alarmen und Mitteilungen
+  displayView:
+    alertMessage: 'Einsatzmeldung:'
+    placeOfUse: 'Einsatzort:'
+    messages: 'Mitteilungen:'

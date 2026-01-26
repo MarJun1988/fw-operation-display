@@ -1,0 +1,10 @@
+[
+  {
+    "reloadTimeAlert": 60000,
+    "reloadTimeStyle": 60000,
+    "reloadTimeGeneral": 60000,
+    "reloadTimeMessage": 60000,
+    "diveraUrl": "https://www.divera247.com",
+    "showReloadToast": false
+  }
+]

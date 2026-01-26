@@ -1,0 +1,36 @@
+<script>
+    const __API__ = {
+        // Grundeinstellung
+        generals: {{ path('api_generals')|json_encode|raw }},
+        general: {
+            getById: {{ path('api_general_get_by_id',  { 'id': ' ' })|json_encode|raw }},
+            new: {{ path('api_general_new')|json_encode|raw }},
+            edit: {{ path('api_general_edit',  { 'id': ' ' })|json_encode|raw }},
+            delete: {{ path('api_general_delete', { 'id': ' ' })|json_encode|raw }}
+        },
+        // Eingegangene Alarmierungen
+        incomingAlerts: {{ path('api_incoming_alerts')|json_encode|raw }},
+        incomingAlert: {
+            getById: {{ path('api_incoming_alert_get_by_id',  { 'id': ' ' })|json_encode|raw }},
+            new: {{ path('api_incoming_alert_new')|json_encode|raw }},
+            edit: {{ path('api_incoming_alert_edit',  { 'id': ' ' })|json_encode|raw }},
+            delete: {{ path('api_incoming_alert_delete', { 'id': ' ' })|json_encode|raw }}
+        },
+        // Nachrichten
+        messages: {{ path('api_messages')|json_encode|raw }},
+        message: {
+            getById: {{ path('api_message_get_by_id',  { 'id': ' ' })|json_encode|raw }},
+            new: {{ path('api_message_new')|json_encode|raw }},
+            edit: {{ path('api_message_edit',  { 'id': ' ' })|json_encode|raw }},
+            delete: {{ path('api_message_delete', { 'id': ' ' })|json_encode|raw }}
+        },
+        // Site Style
+        siteStyles: {{ path('api_site_styles')|json_encode|raw }},
+        siteStyle: {
+            getById: {{ path('api_site_style_get_by_id',  { 'id': ' ' })|json_encode|raw }},
+            new: {{ path('api_site_style_new')|json_encode|raw }},
+            edit: {{ path('api_site_style_edit',  { 'id': ' ' })|json_encode|raw }},
+            delete: {{ path('api_site_style_delete', { 'id': ' ' })|json_encode|raw }}
+        }
+    }
+</script>

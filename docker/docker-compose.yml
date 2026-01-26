@@ -1,0 +1,47 @@
+version: '3.3'
+
+services:
+  db-display:
+    container_name: db-display
+    image: mysql:8.0-oracle
+    restart: always
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./db/:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+#      - MYSQL_ROOT_PASSWORD=1i6ra5rskTBVN#t8&?#4
+      - MYSQL_ROOT_PASSWORD=feuerwehr112
+      - MYSQL_DATABASE=fw-operation-display
+      - MYSQL_USER=web-app
+      - MYSQL_PASSWORD=feuerwehr112
+
+  php-fpm:
+    container_name: php-fpm
+    image: blackadler/php-8.1-fpm-composer:latest
+#    build: ./php-fpm
+    restart: always
+    volumes:
+      - ../web-app/:/var/www/html
+#      - ./php-fpm/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+#      - ./php-fpm/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+    links:
+      - db-display
+    depends_on:
+      - db-display
+
+  nginx:
+    container_name: webserver
+    build: ./nginx
+    restart: always
+    volumes:
+      - ../web-app:/var/www/
+      - ./nginx/logs/:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - php-fpm
+    depends_on:
+      - php-fpm
