@@ -368,11 +368,11 @@ export const useIncomingAlertStore = defineStore('incomingAlertStore', () => {
 
       devLog('getLastIncomingAlertAddress - Regex match: ', matches)
 
-      if (matches && matches.length > 0 && matches[1]) {
+      if (matches && matches.length > 0 && matches[0]) {
         // Trennung Ort und Ortsteil
-        const addressSplit = matches[1].split('-')
+        const addressSplit = matches[0].split('-')
 
-devLog('getLastIncomingAlertAddress - addressSplit: ', addressSplit)
+        devLog('getLastIncomingAlertAddress - addressSplit: ', addressSplit)
 
         // Anpassung, wenn Namen zusammen geschrieben sind
         let addressByCaps: string = ''
