@@ -1,0 +1,91 @@
+# ----------------------------------------
+# JetBrains / WebStorm
+# ----------------------------------------
+.idea/
+*.iml
+
+# ----------------------------------------
+# Node / npm / Yarn / PNPM
+# ----------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Optional: Lockfiles ignorieren (falls gewünscht)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ----------------------------------------
+# Vue / Vite Build Output
+# ----------------------------------------
+dist/
+coverage/
+out/
+
+# Vite cache
+.vite/
+vite.config.ts.timestamp-*
+
+# ----------------------------------------
+# Prisma
+# ----------------------------------------
+# Prisma Client (wird generiert)
+prisma/client/
+prisma/generated/
+
+# Prisma Engine Binaries
+*.prisma
+*.prisma-wasm
+*.so
+*.dylib
+*.dll
+
+# Optional: Migrationen (falls nicht tracken)
+# prisma/migrations/
+
+# ----------------------------------------
+# Environment Dateien überall ignorieren
+# ----------------------------------------
+.env
+.env.*.local
+
+# ALLE .env-Dateien in allen Unterordnern
+**/.env
+**/.env.*
+!**/.env.example
+**/.env.*.local
+
+# ----------------------------------------
+# Logs
+# ----------------------------------------
+logs/
+*.log
+.log/
+
+# ----------------------------------------
+# Betriebssystem-spezifisch
+# ----------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Datenbak Datein
+pgdata/
+pg_backups/
+
+*.crt
+*.key
+ssl/
+nginx/ssl/

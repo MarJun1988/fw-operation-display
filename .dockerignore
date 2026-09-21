@@ -1,0 +1,38 @@
+# Node / Frontend
+**/node_modules
+**/.npm
+**/.yarn
+**/.pnp.js
+**/.pnp.cjs
+
+# PHP / Composer
+**/vendor
+composer.lock
+phpunit.xml
+.phpunit.result.cache
+
+# Logs / Cache
+**/var/cache
+**/var/log
+*.log
+/docker/db_data
+
+# Docker / CI
+.dockerignore
+Dockerfile*
+docker-compose*.yml
+
+# Git / IDE
+.git
+.gitignore
+.gitattributes
+.idea
+.vscode
+*.swp
+*.swo
+*.DS_Store
+
+
+# Builds
+/web-app/public/builds
+/web-app/public/bundles
